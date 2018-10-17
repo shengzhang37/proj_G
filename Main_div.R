@@ -12,13 +12,15 @@ Data_dir = "/Users/shengzhang/Desktop/third year I/SBM/Data/"
 Function_dir = "/Users/shengzhang/Desktop/third year I/SBM/SBMfunction/"
 Data_filename = "facebook_combined.txt"
 
+# source useful function
+source(paste0(Function_dir,"SBMfunction.R"))
+
+
 # Read Data
 AA_edge = read.table(paste0(Data_dir, Data_filename))
 GG = igraph::graph_from_data_frame(AA_edge,directed = FALSE)
 AA = as_adj(GG)
 
-# Source function 
-source(paste0(Function_dir,"Graph_Div.R")) # my proposed graph division method
 
 # use Graph_Div() to divide the graph, we can tune parameters
 graph_div = Graph_Div(GG,upper_size = 800,lower_size = 30, lower_M = 0.03, lambda = 0.1)
@@ -48,10 +50,13 @@ image(pi_2,main = "Estimated Probabilty Matrix(clustered)")
 
 ################################# Louvian ################################
 
-source(paste0(Function_dir,"P_matrix_fromclustering.R"))
-pi_3 = P_Matrix_fromclustering(mem,AA)
+pi_3 = P_Matrix_fromclustering(membership(fc),AA)
 image(pi_3,main = "Estimated Probabilty Matrix(Louvian)")
 
 ################################# ROC ###################################
+
+
+
+
 
 

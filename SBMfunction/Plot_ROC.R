@@ -1,27 +1,35 @@
-library(plotROC)
-library(ggplot2)
-library(pROC)
+D.ex = whole_edge$edge_row
+M1 = whole_edge$prob_row
+M2 = div_edge$prob_row
+M3 = clu_edge$prob_row
 
-n = 400
-stopifnot(n <= dim(AA)[1])
-mem_div = mem
+test <- data.frame(D = D.ex, 
+                   M1 = M1, M2 = M2, stringsAsFactors = FALSE)
+basicplot <- ggplot(test, aes(d = D, m = M2)) + geom_roc()
+basicplot
 
-sub_index =  base::sample(1:(dim(AA)[1]-1),(n-1), replace = FALSE)
-edge_row = lapply(sub_index, function(i) AA[i,-(1:i)])
-prob2_row = lapply(sub_index, function(i){ j = (i + 1) : dim(AA)[1]
-sapply(j, function(j)  pi_2[mem_div[i],mem_div[j]])
-}
-)
+styledplot <- basicplot + style_roc()
+styledplot
 
-edge = unlist(edge_row) # 把matrix变成一个array
-prob2 = unlist(prob2_row)
+styledplot + geom_rocci()
 
-test <- data.frame(D = edge,
-                   A_div =prob2,  stringsAsFactors = FALSE)
-basicplot <- ggplot(test, aes(d = D, m = A_div)) + geom_roc()
-basicplot # shell中输入这个会画出图来
+head(test)
 
-roc_obj2 <- roc(edge, prob2)
-auc(roc_obj2) # 返回结果
+longtest <- melt_roc(test, "D", c("M1", "M2"))
+head(longtest)
+
+ggplot(longtest, aes(d = D, m = M, color = name)) + geom_roc() + style_roc()
+
+
+roc_obj1 <- roc(D.ex, M1)
+auc(roc_obj1) ## 0.993
+roc_obj2 <- roc(D.ex, M2)
+auc(roc_obj2) ## 0.975
+
+roc_obj3 <- roc(D.ex, M3)
+auc(roc_obj3)  ## 0.9314
+
+
+
 
 

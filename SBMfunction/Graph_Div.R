@@ -5,6 +5,7 @@
 #' @param lower_M required lower bound of Modularity for dividing sub-graph
 #' @param lambda parameter for M_trend_peak function
 #' @export mem assigned member for input graph
+#' @export fc the for the fastgreedy
 Graph_Div <- function(GG,lower_size = 50,upper_size = 2000,lower_M = 0.4,lambda = 0.01){
   GG = simplify(GG)
   AA = as_adj(GG)
